@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6edb5881-bc83-4fcb-bbd4-9fc0a6473cc5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="github_project_usecaseFlow" doc:id="e46bfe9d-626e-4e0f-8939-1ab1b39957bb" >
+		<http:listener doc:name="Listener" doc:id="536625ee-6e3a-43f5-b781-1d2469099d62" config-ref="HTTP_Listener_config" path="/api"/>
+		<set-payload value='#["Hello VYSHNAVI.How are you"]' doc:name="Set Payload" doc:id="8d99f78a-ecbb-4449-afa2-6e60bd8e70be" />
+		<ee:transform doc:name="Transform Message" doc:id="8b71cbd9-d362-4814-a080-5e10604d7f7e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="d3aaa346-0f3b-41f4-a7a6-d2db01e18f42" message="#[payload]"/>
+	</flow>
+</mule>
